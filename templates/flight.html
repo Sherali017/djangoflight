@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block title %}
+    Airbush.com{{ flights.id }}
+{% endblock %}
+
+{% block content %}
+    <h1>Flight {{ flights.id }}</h1>
+    <ul>
+        <li>Origin:{{ flights.origin }}</li>
+        <li>Destination:{{ flights.destination }}</li>
+
+    </ul>
+    <h2>Passengers</h2>
+    <ul>
+        {% for passenger in passengers %}
+            <li>{{ passenger }}</li>
+
+
+        {% endfor %}
+
+
+    </ul>
+    <hr>
+    <h2>Add a Passenger</h2>
+    {% if non_passengers %}
+        <form action="{% url 'book' flights.id %}" method="post">
+            {% csrf_token %}
+            <select name="passenger">
+                {% for passenger in non_passengers %}
+                    <option value="{{ passenger.id }}">{{ passenger }}</option>
+                {% endfor %}
+            </select>
+            <input type="submit" value="Book Flight"/>
+
+        </form>
+    {% else %}
+        <div>No passengers to add.</div>
+    {% endif %}
+    <a href="{% url 'index' %}">Back to List</a>
+{% endblock %}
